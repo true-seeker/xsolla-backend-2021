@@ -7,12 +7,13 @@ class Product(models.Model):
                                           unique=True,
                                           null=False)
     title = models.CharField(max_length=200,
-                             verbose_name='Имя',
+                             verbose_name='Наименование',
                              null=False)
     product_type = models.ForeignKey('main_app.ProductType',
-                                     on_delete=models.SET_NULL,
-                                     null=True,
-                                     verbose_name='Тип')
+                                     on_delete=models.CASCADE,
+                                     verbose_name='Тип',
+                                     default=None,
+                                     null=False)
     price = models.FloatField(verbose_name='Стоимость')
 
     def __str__(self):
