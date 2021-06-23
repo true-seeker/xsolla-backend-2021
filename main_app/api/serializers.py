@@ -1,6 +1,21 @@
 from rest_framework import serializers
 
-from main_app.models import Product
+from main_app.models import Product, ProductType
+
+
+class ProductTypeSerializer(serializers.ModelSerializer):
+    """Сериалазейр класса ProductType"""
+
+    class Meta:
+        model = ProductType
+        fields = ['id', 'title']
+
+    def update(self, instance, validated_data):
+        """Метод для обновления информации о типе продукта с помощью метода PUT"""
+        instance.title = validated_data.get('title', instance.title)
+        instance.save()
+
+        return instance
 
 
 class ProductSerializer(serializers.ModelSerializer):
