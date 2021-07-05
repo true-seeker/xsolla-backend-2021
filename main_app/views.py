@@ -1,10 +1,7 @@
-from django.shortcuts import render
-
-from main_app.models import Product
+from django.shortcuts import redirect
 
 
 def index(request):
     """View корневой страницы"""
 
-    products = Product.objects.all()
-    return render(request, 'index.html', context={'products': products})
+    return redirect('https://github.com/true-seeker/xsolla-backend-2021')
