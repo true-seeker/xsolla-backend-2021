@@ -14,15 +14,15 @@ class ProductList(generics.ListCreateAPIView):
     def get_queryset(self):
         """Фильтр возвращаемых данных по GET параметрам"""
         queryset = Product.objects.all()
-        product_type = self.request.query_params.get('product_type')
+        product_type_id = self.request.query_params.get('product_type_id')
         min_price = self.request.query_params.get('min_price')
         max_price = self.request.query_params.get('max_price')
-        if product_type:
+        if product_type_id:
             try:
-                int(product_type)
+                int(product_type_id)
             except ValueError:
                 raise ProductTypeException
-            queryset = queryset.filter(product_type_id=product_type)
+            queryset = queryset.filter(product_type_id=product_type_id)
 
         if min_price:
             try:
