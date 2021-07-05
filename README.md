@@ -12,7 +12,6 @@ ___
 
 ## API
 ___
-
 По умолчанию, доступ к api осуществляется через https://xsolla-backend-2021.herokuapp.com/api/.
 
 Например, чтобы получить список всех товаров, необходимо отправить GET запрос по адресу https://xsolla-backend-2021.herokuapp.com/api/products/
