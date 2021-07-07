@@ -1,0 +1,23 @@
+version: "3.9"
+   
+services:
+  my_web_app:
+    restart: always
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    expose:
+      - "80"
+    command: gunicorn xsolla_backend_2021.wsgi:application --bind 0.0.0.0:80 --reload
+    volumes:
+      - .:/app
+
+  web_server:
+    build: ./nginx
+
+    ports:
+      - "80:80"
+    expose:
+      - "80"
+    depends_on:
+      - my_web_app
