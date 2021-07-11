@@ -7,8 +7,11 @@
 Веб-фреймворк: Django 3.1.6
 
 Контакты для связи: 
--murz.kirill@yandex.ru
--https://vk.com/id77568810
+
+murz.kirill@yandex.ru
+
+https://vk.com/id77568810
+
 ## Демонстрация работы на heroku
 
 Веб-приложение установлено на heroku по [ссылке](https://xsolla-backend-2021.herokuapp.com/). По умолчанию  страница редиректит на этот репозиторий
