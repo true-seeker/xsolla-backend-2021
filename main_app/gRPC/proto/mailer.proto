@@ -1,0 +1,7 @@
+syntax = "proto3";
+message Text {
+    string data = 1;
+}
+service Mailer {
+    rpc send_email(Text) returns (Text) {};
+}

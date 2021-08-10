@@ -27,3 +27,16 @@ class ProductType(models.Model):
     def __str__(self):
         st = f'{self.title}'
         return st
+
+
+class Purchase(models.Model):
+    """Покупка"""
+    product = models.ForeignKey('main_app.Product',
+                                verbose_name='Продукт',
+                                default=None,
+                                null=False,
+                                on_delete=models.DO_NOTHING)
+
+    email = models.EmailField(verbose_name='e-mail',
+                              default='',
+                              null=False)
