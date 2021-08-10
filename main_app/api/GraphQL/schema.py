@@ -187,6 +187,12 @@ class CreatePurchase(graphene.Mutation):
 
     @staticmethod
     def mutate(root, info, input=None):
+
+        def mail_sent(future):
+            """callback успешной отправки письма,
+            без него, как я понял, сборщик мусора не дает завершить асинхронный вызов метода"""
+            print('mail sent')
+
         ok = False
 
         try:
@@ -204,7 +210,9 @@ class CreatePurchase(graphene.Mutation):
         data = {'send_to': input.email, 'product_title': product_instance.title}
         data = main_app.gRPC.proto.mailer_pb2.Text(data=json.dumps(data))
 
+        # непосредственно вызов метода отправки письма
         response = stub.send_email.future(data)
+        response.add_done_callback(mail_sent)
 
         return CreatePurchase(ok=ok, purchase=purchase_instance)
 
