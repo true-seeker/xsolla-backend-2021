@@ -7,6 +7,8 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
+from graphene_django.views import GraphQLView
+
 from main_app import views
 
 schema_view = get_schema_view(
@@ -26,4 +28,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('api/', include('main_app.api.urls')),
+    path('graphql/', GraphQLView.as_view(graphiql=True)),
+
 ]

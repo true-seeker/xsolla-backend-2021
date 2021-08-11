@@ -14,13 +14,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-lp52#ve6qlk^*2m5(l0l_u=-&z6emst4!d0klkjob!x9#n5&g&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
 # Application definition
 
 INSTALLED_APPS = [
+    'graphene_django',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -30,6 +31,7 @@ INSTALLED_APPS = [
 
     'main_app.apps.MainAppConfig',
     'rest_framework',
+
 ]
 
 MIDDLEWARE = [
@@ -120,4 +122,8 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
     )
+}
+
+GRAPHENE = {
+    'SCHEMA': 'main_app.schema.schema'
 }
