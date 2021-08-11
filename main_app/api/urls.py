@@ -5,10 +5,10 @@ from . import views
 
 urlpatterns = [
     path('products/', views.ProductList.as_view()),
-    path('products/id/<int:pk>/', views.ProductDetailId.as_view()),
-    path('products/sku/<str:stock_keeping_unit>/', views.ProductDetailSKU.as_view()),
+    path('product/id/<int:pk>/', views.ProductDetailId.as_view()),
+    path('product/sku/<str:stock_keeping_unit>/', views.ProductDetailSKU.as_view()),
     path('product_types/', views.ProductTypeList.as_view()),
-    path('product_types/id/<int:pk>/', views.ProductTypeDetailId.as_view()),
+    path('product_type/id/<int:pk>/', views.ProductTypeDetailId.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
