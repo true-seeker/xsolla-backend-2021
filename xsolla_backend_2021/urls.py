@@ -26,4 +26,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('api/', include('main_app.api.urls')),
+    path('signup/', views.signup, name='signup'),
+
 ]
