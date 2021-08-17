@@ -1,4 +1,6 @@
 from rest_framework import generics
+from rest_framework.authentication import BasicAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from main_app.models import Product, ProductType
 from . import serializers
@@ -6,10 +8,14 @@ from .exceptions import ProductTypeException, MinPriceException, MaxPriceExcepti
 from .paginators import ProductsPagination
 
 
-class ProductList(generics.ListCreateAPIView):
-    """Обработка get api/products"""
+class ProductListGet(generics.ListAPIView):
+    """Обработка get api/products/get"""
     serializer_class = serializers.ProductSerializer
     pagination_class = ProductsPagination
+
+    # Указание типа авторизации
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """Фильтр возвращаемых данных по GET параметрам"""
@@ -40,31 +46,88 @@ class ProductList(generics.ListCreateAPIView):
 
         return queryset
 
+
+class ProductList(generics.CreateAPIView):
+    """Обработка post api/products"""
+
+    serializer_class = serializers.ProductSerializer
+    pagination_class = ProductsPagination
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def perform_create(self, serializer):
-        """Обработка post запросов"""
         serializer.save()
 
 
-class ProductDetailId(generics.RetrieveUpdateDestroyAPIView):
-    """Обработка get, update, delete api/products/id/<id>"""
+class ProductDetailId(generics.UpdateAPIView, generics.DestroyAPIView):
+    """Обработка update, delete api/products/id/<id>"""
+    # Кастомная проверка разрешений изменение и чтение
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     queryset = Product.objects.all()
     serializer_class = serializers.ProductSerializer
 
 
-class ProductDetailSKU(generics.RetrieveUpdateDestroyAPIView):
-    """Обработка get, update, delete api/products/sku/<stock_keeping_unit>"""
+class ProductDetailIdGet(generics.RetrieveAPIView):
+    """Обработка get api/get/products/id/<id>"""
+    # Кастомная проверка разрешений изменение и чтение
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    queryset = Product.objects.all()
+    serializer_class = serializers.ProductSerializer
+
+
+class ProductDetailSKU(generics.UpdateAPIView, generics.DestroyAPIView):
+    """Обработка update, delete api/products/sku/<stock_keeping_unit>"""
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     queryset = Product.objects.all()
     serializer_class = serializers.ProductSerializer
     lookup_field = 'stock_keeping_unit'
 
 
-class ProductTypeList(generics.ListCreateAPIView):
-    """Обработка get api/product_types/"""
+class ProductDetailSKUGet(generics.RetrieveAPIView):
+    """Обработка get api/products/get/sku/<stock_keeping_unit>"""
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    queryset = Product.objects.all()
+    serializer_class = serializers.ProductSerializer
+    lookup_field = 'stock_keeping_unit'
+
+
+class ProductTypeListGet(generics.ListAPIView):
+    """Обработка get api/product_types/get/"""
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
     queryset = ProductType.objects.all()
     serializer_class = serializers.ProductTypeSerializer
 
 
-class ProductTypeDetailId(generics.RetrieveUpdateDestroyAPIView):
-    """Обработка get, update, delete api/product_types/id/<id>"""
+class ProductTypeList(generics.CreateAPIView):
+    """Обработка post api/product_types/"""
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     queryset = ProductType.objects.all()
     serializer_class = serializers.ProductTypeSerializer
+
+
+class ProductTypeDetailIdGet(generics.RetrieveAPIView):
+    """Обработка get api/product_types/get/id/<id>"""
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.ProductTypeSerializer
+    queryset = ProductType.objects.all()
+
+
+class ProductTypeDetailId(generics.UpdateAPIView, generics.DestroyAPIView):
+    """Обработка update, delete api/product_types/id/<id>"""
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.ProductTypeSerializer
+    queryset = ProductType.objects.all()

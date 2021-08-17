@@ -3,44 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>xsolla-backend-2021</title>
-    <style>
-        table {
-            width: 100%;
-            border: 4px double black;
-            border-collapse: collapse;
-        }
-
-        th {
-            text-align: left;
-            background: #ccc;
-            padding: 5px;
-            border: 1px solid black;
-        }
-
-        td {
-            padding: 5px;
-            border: 1px solid black;
-        }
-    </style>
 </head>
 <body>
-<table>
-    <tr>
-        <th>id</th>
-        <th>SKU</th>
-        <th>Наименование</th>
-        <th>Тип</th>
-        <th>Стоимость</th>
-    </tr>
-    {% for product in products %}
-        <tr>
-            <td>{{ product.id }}</td>
-            <td>{{ product.stock_keeping_unit }}</td>
-            <td>{{ product.title }}</td>
-            <td>{{ product.product_type.title }}</td>
-            <td>{{ product.price }}</td>
-        </tr>
-    {% endfor %}
-</table>
+<h1>Hello there</h1>
 </body>
 </html>
