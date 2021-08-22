@@ -16,6 +16,10 @@ class Product(models.Model):
                                      null=False)
     price = models.FloatField(verbose_name='Стоимость')
 
+    landing = models.CharField(max_length=200,
+                               verbose_name='Лендинг',
+                               default='https://vk.com')
+
     def __str__(self):
         st = f'{self.stock_keeping_unit} | {self.title} | {self.price} руб.'
         return st
