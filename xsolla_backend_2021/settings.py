@@ -121,3 +121,5 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     )
 }
+
+QUEUE_TTL = 5000  # 5 sec TTL
