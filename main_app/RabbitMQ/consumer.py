@@ -1,10 +1,12 @@
 import json
-import sys
+import time
 
 import pika
 import requests
 
-from xsolla_backend_2021.settings import QUEUE_TTL
+QUEUE_TTL = 5000  # Время жизни запроса
+
+RECHECK_TIME = 1  # Время перепроверки лендинга, если запрос вернул неудачу (в минутах)
 
 
 def callback(ch, method, properties, body):
@@ -13,11 +15,15 @@ def callback(ch, method, properties, body):
     print(f'Received {body}')
 
     r = requests.get(body['landing'])
-    if r.status_code == 200:
-        # Подтверждение обработки сообщения
+    if 300 <= r.status_code < 300:
+        # Подтверждение получения лендинга
+        print('success check')
         ch.basic_ack(delivery_tag=method.delivery_tag)
     else:
-        ch.basic_reject(delivery_tag=method.delivery_tag, multiple=False)
+        # Получить лендинг не удалось
+        print('failed check')
+        ch.basic_reject(delivery_tag=method.delivery_tag)
+        time.sleep(RECHECK_TIME * 60)
 
 
 def main():
@@ -26,9 +32,7 @@ def main():
     channel = connection.channel()
 
     # Создание очереди
-    channel.queue_declare(queue='landing', arguments={
-        'x-message-ttl': QUEUE_TTL,  # ограничиваем время жизни
-    })
+    channel.queue_declare(queue='landing')
 
     # Создание консьюмера
     channel.basic_consume(queue='landing', on_message_callback=callback, auto_ack=False)
