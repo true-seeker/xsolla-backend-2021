@@ -16,7 +16,7 @@ def callback(ch, method, properties, body):
     print(f'Received {body}')
 
     r = requests.get(body['landing'])
-    if 300 <= r.status_code < 300:
+    if 200 <= r.status_code < 300:
         # Подтверждение получения лендинга
         print('success check')
         ch.basic_ack(delivery_tag=method.delivery_tag)
