@@ -46,6 +46,7 @@ class ProductList(generics.ListCreateAPIView):
         """Обработка post запросов"""
         product = serializer.save()
 
+        # Запуск проверки лендинга
         check_landing(product)
 
 
