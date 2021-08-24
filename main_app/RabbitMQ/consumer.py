@@ -12,10 +12,10 @@ RECHECK_TIME = 1  # Время перепроверки лендинга, есл
 
 def callback(ch, method, properties, body):
     """Обработка входящих сообщений"""
-    body = json.loads(body)
-    print(f'Received {body}')
+    json_body = json.loads(body)
+    print(f'Received {json_body}')
 
-    r = requests.get(body['landing'])
+    r = requests.get(json_body['landing'])
     if 200 <= r.status_code < 300:
         # Подтверждение получения лендинга
         print('success check')
@@ -24,7 +24,12 @@ def callback(ch, method, properties, body):
         # Получить лендинг не удалось
         print('failed check')
         ch.basic_reject(delivery_tag=method.delivery_tag)
-        time.sleep(RECHECK_TIME * 60)
+        ch.basic_publish(exchange='test-exchange',
+                         routing_key='landing',
+                         properties=pika.BasicProperties(
+                             headers={'x-delay': RECHECK_TIME * 5}),
+                         body=body)
+        # time.sleep(RECHECK_TIME * 60)
 
 
 def main():
