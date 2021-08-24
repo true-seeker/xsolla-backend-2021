@@ -5,6 +5,8 @@ from . import serializers
 from .exceptions import ProductTypeException, MinPriceException, MaxPriceException
 from .paginators import ProductsPagination
 
+from main_app.RabbitMQ.producer import check_landing
+
 
 class ProductList(generics.ListCreateAPIView):
     """Обработка get api/products"""
@@ -42,7 +44,10 @@ class ProductList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         """Обработка post запросов"""
-        serializer.save()
+        product = serializer.save()
+
+        # Запуск проверки лендинга
+        check_landing(product)
 
 
 class ProductDetailId(generics.RetrieveUpdateDestroyAPIView):
