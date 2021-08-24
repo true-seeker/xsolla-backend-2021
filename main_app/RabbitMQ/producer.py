@@ -19,12 +19,14 @@ def check_landing(product: Product):
     # Установка соединения с rabbit
     connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
     channel = connection.channel()
-
+    channel.exchange_declare(exchange='landing-exchange',
+                             exchange_type='x-delayed-message',
+                             arguments={"x-delayed-type": "direct"})
     # Определение очереди
-    channel.queue_declare(queue='landing')
+    # channel.queue_declare(queue='landing')
 
     # Отправка сообщения
-    channel.basic_publish(exchange='', routing_key='landing', body=serialized_product,
+    channel.basic_publish(exchange='landing-exchange', routing_key='landing', body=serialized_product,
                           properties=pika.BasicProperties(expiration=str(QUEUE_TTL)))
 
     print(f'Sent {serialized_product}')
