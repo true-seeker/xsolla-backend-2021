@@ -1,7 +1,7 @@
 """
 Django settings for xsolla_backend_2021 project.
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -66,10 +66,17 @@ WSGI_APPLICATION = 'xsolla_backend_2021.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+mongo_user = os.environ.get('$MONGO_ADMIN_USERNAME')
+mongo_password = os.environ.get('$MONGO_ADMIN_PASSWORD')
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'db-name',
+        "CLIENT": {
+            "host": f"mongodb://{mongo_user}:{mongo_password}@localhost:27017/?retryWrites=true&w=majority",
+            "username": f"{mongo_user}",
+            "password": f"{mongo_password}",
+            "name": "my_db",
+        },
     }
 }
 
